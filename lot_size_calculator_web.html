@@ -354,7 +354,7 @@ function copyLotSize() {
 }
 
 function clearClicked() {
-	document.getElementById("main_account_balance").value = 10000;
+//	document.getElementById("main_account_balance").value = 10000;
 	document.getElementById("high").value = '';
 	document.getElementById("low").value = '';
 	document.getElementById("currency_conversion_rate").value = '';
@@ -386,13 +386,15 @@ pip_difference = high - low;
 
 if(three_radio) {
 	pip_difference = pip_difference.toFixed(3);
+	total_pips = (pip_difference * 100 + 2).toFixed(1);
 
 }
 else {
 	pip_difference = pip_difference.toFixed(5);
+	total_pips = (pip_difference * 10000 + 2).toFixed(1);
 }
 
-total_pips = (pip_difference * 100 + 2).toFixed(1);
+
 
 
 
