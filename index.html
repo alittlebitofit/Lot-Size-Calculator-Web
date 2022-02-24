@@ -1,469 +1,485 @@
-
-
 <!DOCTYPE html>
 <html>
-   <head>
-<style>
-
-  	
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-}
-
-.switch input { 
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-input:checked + .slider {
-  background-color: #2196F3;
-}
-
-input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
-}
-
-input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
-}
-
-/* Rounded sliders */
-.slider.round {
-  border-radius: 34px;
-}
-
-.slider.round:before {
-  border-radius: 50%;
-}
-
-
-
-* {
-  box-sizing: border-box;
-}
-
-/* Create two equal columns that floats next to each other */
-.column {
-  float: left;
-  width: 50%;
-  padding: 10px;
-  height: 500px; /* Should be removed. Only for demonstration */
-}
-
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-
-.center {
-  text-align: center;
-  margin: auto;
-  width: 60%;
-  border: 3px solid #73AD21;
-  padding: 10px;
-}
-
-
-
-
-#snackbar {
-  visibility: hidden;
-  min-width: 250px;
-  margin-left: -125px;
-  background-color: #333;
-  color: #fff;
-  text-align: center;
-  border-radius: 2px;
-  padding: 16px;
-  position: fixed;
-  z-index: 1;
-  left: 50%;
-  bottom: 30px;
-  font-size: 17px;
-}
-
-#snackbar.show {
-  visibility: visible;
-  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
-  animation: fadein 0.5s, fadeout 0.5s 2.5s;
-}
-
-@-webkit-keyframes fadein {
-  from {bottom: 0; opacity: 0;} 
-  to {bottom: 30px; opacity: 1;}
-}
-
-@keyframes fadein {
-  from {bottom: 0; opacity: 0;}
-  to {bottom: 30px; opacity: 1;}
-}
-
-@-webkit-keyframes fadeout {
-  from {bottom: 30px; opacity: 1;} 
-  to {bottom: 0; opacity: 0;}
-}
-
-@keyframes fadeout {
-  from {bottom: 30px; opacity: 1;}
-  to {bottom: 0; opacity: 0;}
-}
-
-
-</style>
-   </head>
-   <body>
-
-<div class="row">
-  <div class="column" style="background-color:#aaa;">
-
-
-<!--      <form>-->
-         <label for="main_account_balance">Main Account Balance:</label>
-         <input type="number" id="main_account_balance" name="main_account_balance" value="10000"><br><br>
-
-         <label for="high">High:</label>
-         <input type="number" id="high" name="high" value="77.282"><br><br>
-
-         <label for="low">Low:</label>
-         <input type="number" id="low" name="low" value="76.927"><br><br>
-
-         <label for="currency_conversion_rate">Currency Conversion Rate:</label>
-         <input type="number" id="currency_conversion_rate" name="currency_conversion_rate" value="1.55"><br><br>
-
-
-         <label for="risk_rate">Risk Rate:</label>
-         <input type="number" id="risk_rate" name="risk_rate" value="1"><br><br>
-
-         <label for="reward_rate">Reward Rate:</label>
-         <input type="number" id="reward_rate" name="reward_rate" value="0.1"><br><br>
-
-         <!--<input type="radio" id="buy_radio" name="buy_or_sell" value="Buy" checked>-->
-         <!--<label for="buy">Buy</label><br>-->
-
-         <!--<input type="radio" id="sell_radio" name="buy_or_sell" value="Sell">-->
-         <!--<label for="sell">Sell</label><br><br><br>-->
-
-         <label >How many digits after decimal?</label><br>
-         <input type="radio" id="3_radio" name="3_or_5_digits_after_decimal" value="3" checked>
-         <label for="buy">3</label><br>
-
-         <input type="radio" id="5_radio" name="3_or_5_digits_after_decimal" value="5">
-         <label for="sell">5</label><br><br>
-
-
-<!--<label class="switch" >-->
-  <!--<input type="checkbox" checked>-->
-  <!--<span class="slider round">Display all values?</span>-->
-<!--</label><br><br>-->
-
-<!--<label class="switch">-->
-<!--	<input type="checkbox" checked> <span class="slider round">Copy order values on Submit?</span> </label>-->
-<!--<br>-->
-<!--<br>-->
-<!--<label class="switch">-->
-<!--	<input type="checkbox" checked> <span class="slider round">Copy both Buy and Sell values on Submit?</span> </label>-->
-<!--<br>-->
-<!--<br>-->
-
-
-<label for="pip_difference">Attach Entry?</label>
-<label class="switch">
-  <input type="checkbox" id="attachEntryId">
-  <span class="slider round"></span>
-</label><br><br>
-
-
-         <input type="button" value="Clear" onclick="clearClicked()">
-         <input type="submit" value="Submit" onclick="submitClicked()">  
-      <!--</form>-->
-
-	</div>
-  	<div class="column" style="background-color:#bbb;">
-
-		<label for="pip_difference">Pip Difference:</label>
-<p style="display:inline" id="pip_difference_id"></p>
-<button type="button" onclick="copyPipDifference()">Copy</button><br><br>
-<p style="display:inline" id="pip_difference_id"></p>
-		<label for="total_pips">Total Pips:</label>
-<p style="display:inline" id="total_pips_id"></p>
-<button type="button" onclick="copyTotalPips()">Copy</button><br><br>
-
-		<label class="center" for="values_for_buy_title">Values for Buy:</label><br><br>
-
-		<label for="entry_price_buy">Entry price (Buy):</label>
-<p style="display:inline" id="entry_price_buy_id"></p>
-<button type="button" onclick="copyEntryPriceBuy()">Copy</button><br><br>
-		<label for="stop_loss_buy">Stop Loss price (Buy):</label>
-<p style="display:inline" id="stop_loss_buy_id"></p>
-<button type="button" onclick="copyStopLossBuy()">Copy</button><br><br>
-		<label for="take_profit_buy">Take Profit price (Buy):</label>
-<p style="display:inline" id="take_profit_buy_id"></p>
-<button type="button" onclick="copyTakeProfitBuy()">Copy</button><br><br>
-
-		<label class="center" for="values_for_sell">Values for Sell:</label><br><br>
-
-		<label for="entry_price_sell">Entry price (Sell):</label>
-<p style="display:inline" id="entry_price_sell_id"></p>
-<button type="button" onclick="copyEntryPriceSell()">Copy</button><br><br>
-		<label for="stop_loss_sell">Stop Loss price (Sell):</label>
-<p style="display:inline" id="stop_loss_sell_id"></p>
-<button type="button" onclick="copyStopLossSell()">Copy</button><br><br>
-		<label for="take_profit_sell">Take Profit price (Sell):</label>
-<p style="display:inline" id="take_profit_sell_id"></p>
-<button type="button" onclick="copyTakeProfitSell()">Copy</button><br><br>
-
-		<label for="lot_size">Lot Size:</label>
-<p style="display:inline" id="lot_size_id"></p>
-<button type="button" onclick="copyLotSize()">Copy</button><br><br>
-
-  	</div>
-</div>
-
-<div id="snackbar">Some text some message..</div>
-
-<script>
-
-let pip_difference;
-let total_pips;
-
-let entry_price_buy;
-let stop_loss_price_buy;
-let take_profit_buy;
-
-
-let entry_price_sell;
-let stop_loss_price_sell;
-let take_profit_sell;
-
-let lot_size;
-
-
-function copyPipDifference() {
-  navigator.clipboard.writeText(pip_difference);
-
-  var x = document.getElementById("snackbar");
-  x.className = "show";
-  x.innerText = "Copied Pip Difference: " + pip_difference;
-  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-
-}
-
-function copyTotalPips() {
-  navigator.clipboard.writeText(total_pips);
-
-  var x = document.getElementById("snackbar");
-  x.className = "show";
-  x.innerText = "Copied Total Pips: " + total_pips;
-  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-}
-
-function copyEntryPriceBuy() {
-  navigator.clipboard.writeText(entry_price_buy);
-
-  var x = document.getElementById("snackbar");
-  x.className = "show";
-  x.innerText = "Copied Entry Price (Buy): " + entry_price_buy;
-  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-}
-
-function copyStopLossBuy() {
-  navigator.clipboard.writeText(stop_loss_price_buy);
-
-  var x = document.getElementById("snackbar");
-  x.className = "show";
-  x.innerText = "Copied Stop Loss (Buy): " + stop_loss_price_buy;
-  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-}
-
-function copyTakeProfitBuy() {
-  navigator.clipboard.writeText(take_profit_buy);
-
-  var x = document.getElementById("snackbar");
-  x.className = "show";
-  x.innerText = "Copied Take Profit (Buy): " + take_profit_buy;
-  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-}
-
-function copyEntryPriceSell() {
-  navigator.clipboard.writeText(entry_price_sell);
-
-  var x = document.getElementById("snackbar");
-  x.className = "show";
-  x.innerText = "Copied Entry Price (Sell): " + entry_price_sell;
-  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-}
-
-function copyStopLossSell() {
-  navigator.clipboard.writeText(stop_loss_price_sell);
-
-  var x = document.getElementById("snackbar");
-  x.className = "show";
-  x.innerText = "Copied Stop Loss (Sell): " + stop_loss_price_sell;
-  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-}
-
-function copyTakeProfitSell() {
-  navigator.clipboard.writeText(take_profit_sell);
-
-  var x = document.getElementById("snackbar");
-  x.className = "show";
-  x.innerText = "Copied Take Profit (Sell): " + take_profit_sell;
-  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-}
-
-function copyLotSize() {
-  navigator.clipboard.writeText(lot_size);
-
-  var x = document.getElementById("snackbar");
-  x.className = "show";
-  x.innerText = "Copied Lot Size: " + lot_size;
-  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-}
-
-function clearClicked() {
-//	document.getElementById("main_account_balance").value = 10000;
-	document.getElementById("high").value = '';
-	document.getElementById("low").value = '';
-	document.getElementById("currency_conversion_rate").value = '';
-	document.getElementById("risk_rate").value = 1;
-	document.getElementById("reward_rate").value = 0.1;
-}
-
-function submitClicked() {
-
-var main_account_balance = Number(document.getElementById("main_account_balance").value);
-var high = Number(document.getElementById("high").value);
-var low = Number(document.getElementById("low").value);
-var currency_conversion_rate = Number(document.getElementById("currency_conversion_rate").value);
-var risk_rate = Number(document.getElementById("risk_rate").value);
-var reward_rate = Number(document.getElementById("reward_rate").value);
-//var buy_radio = document.getElementById("buy_radio").checked;
-//var sell_radio = document.getElementById("sell_radio").checked;
-var three_radio = document.getElementById("3_radio").checked;
-var five_radio = document.getElementById("5_radio").checked;
-    //alert ("You entered: " + main_account_balance + " " + high + " " + low + " " + currency_conversion_rate + " " + risk_rate + " " + reward_rate + " " + buy_radio + " " + sell_radio + " " + three_radio + " " + five_radio);
-
-var attached_entry = document.getElementById("attachEntryId").checked;
-
-
-pip_difference = high - low;
-
-
-
-
-if(three_radio) {
-	pip_difference = pip_difference.toFixed(3);
-	total_pips = (pip_difference * 100 + 2).toFixed(1);
-
-}
-else {
-	pip_difference = pip_difference.toFixed(5);
-	total_pips = (pip_difference * 10000 + 2).toFixed(1);
-}
-
-
-
-
-
-
-
-	if(three_radio) {
-		entry_price_buy = (high + 0.01).toFixed(3);
-		stop_loss_price_buy = Number(entry_price_buy - ((total_pips / 100) * risk_rate)).toFixed(3);
-		take_profit_buy = (Number(entry_price_buy) + (total_pips / 100) * reward_rate).toFixed(3);
-
-		entry_price_sell = (low - 0.01).toFixed(3);
-		stop_loss_price_sell = (Number(entry_price_sell) + (total_pips / 100) * risk_rate).toFixed(3);
-		take_profit_sell = (entry_price_sell - ((total_pips / 100) * reward_rate)).toFixed(3);
-
-		if(attached_entry) {
-			entry_price_buy = Number(entry_price_buy - 0.01).toFixed(3);
-			stop_loss_price_buy = (Number(stop_loss_price_buy) + 0.01).toFixed(3);
-			take_profit_buy = Number(take_profit_buy - 0.01).toFixed(3);
-
-			entry_price_sell = (Number(entry_price_sell) + 0.01).toFixed(3);
-			stop_loss_price_sell = Number(stop_loss_price_sell - 0.01).toFixed(3);
-			take_profit_sell = (Number(take_profit_sell) + 0.01).toFixed(3);
-
-			total_pips -= 2;
-		}
-	}
-	else {
-		entry_price_buy = (high + 0.0001).toFixed(5);
-		stop_loss_price_buy = (entry_price_buy - ((total_pips / 10000) * risk_rate)).toFixed(5);
-		take_profit_buy = (Number(entry_price_buy) + ((total_pips / 10000) * reward_rate)).toFixed(5);
-
-		entry_price_sell = (low - 0.0001).toFixed(5);
-		stop_loss_price_sell = (Number(entry_price_sell) + ((total_pips / 10000) * risk_rate)).toFixed(5);
-		take_profit_sell = (entry_price_sell - ((total_pips / 10000) * reward_rate)).toFixed(5);
-
-		if(attached_entry) {
-			entry_price_buy = Number(entry_price_buy - 0.0001).toFixed(5);
-			stop_loss_price_buy = (Number(stop_loss_price_buy) + 0.0001).toFixed(5);
-			take_profit_buy = Number(take_profit_buy - 0.0001).toFixed(5);
-
-			entry_price_sell = (Number(entry_price_sell) + 0.0001).toFixed(5);
-			stop_loss_price_sell = Number(stop_loss_price_sell - 0.0001).toFixed(5);
-			take_profit_sell = (Number(take_profit_sell) + 0.0001).toFixed(5);
-
-			total_pips -= 2;
-		}
-	}
-
-
-lot_size = (main_account_balance / 1000 / total_pips * currency_conversion_rate).toFixed(2);
-
-document.getElementById("pip_difference_id").innerText = pip_difference;
-document.getElementById("total_pips_id").innerText = total_pips;
-
-document.getElementById("entry_price_buy_id").innerText = entry_price_buy;
-document.getElementById("stop_loss_buy_id").innerText = stop_loss_price_buy;
-document.getElementById("take_profit_buy_id").innerText = take_profit_buy;
-
-document.getElementById("entry_price_sell_id").innerText = entry_price_sell;
-document.getElementById("stop_loss_sell_id").innerText = stop_loss_price_sell;
-document.getElementById("take_profit_sell_id").innerText = take_profit_sell;
-
-document.getElementById("lot_size_id").innerText = lot_size;
-
-
-}
-</script> 
-
-
-   </body>
+    <head>
+        <style>
+            .switch {
+                position: relative;
+                display: inline-block;
+                width: 60px;
+                height: 34px;
+            }
+
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+            .slider {
+                position: absolute;
+                cursor: pointer;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: #ccc;
+                -webkit-transition: 0.4s;
+                transition: 0.4s;
+            }
+
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 26px;
+                width: 26px;
+                left: 4px;
+                bottom: 4px;
+                background-color: white;
+                -webkit-transition: 0.4s;
+                transition: 0.4s;
+            }
+
+            input:checked + .slider {
+                background-color: #2196f3;
+            }
+
+            input:focus + .slider {
+                box-shadow: 0 0 1px #2196f3;
+            }
+
+            input:checked + .slider:before {
+                -webkit-transform: translateX(26px);
+                -ms-transform: translateX(26px);
+                transform: translateX(26px);
+            }
+
+            /* Rounded sliders */
+            .slider.round {
+                border-radius: 34px;
+            }
+
+            .slider.round:before {
+                border-radius: 50%;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            /* Create two equal columns that floats next to each other */
+            .column {
+                float: left;
+                width: 50%;
+                padding: 10px;
+                height: 500px; /* Should be removed. Only for demonstration */
+            }
+
+            /* Clear floats after the columns */
+            .row:after {
+                content: "";
+                display: table;
+                clear: both;
+            }
+
+            .center {
+                text-align: center;
+                margin: auto;
+                width: 60%;
+                border: 3px solid #73ad21;
+                padding: 10px;
+            }
+
+            #snackbar {
+                visibility: hidden;
+                min-width: 250px;
+                margin-left: -125px;
+                background-color: #333;
+                color: #fff;
+                text-align: center;
+                border-radius: 2px;
+                padding: 16px;
+                position: fixed;
+                z-index: 1;
+                left: 50%;
+                bottom: 30px;
+                font-size: 17px;
+            }
+
+            #snackbar.show {
+                visibility: visible;
+                -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+                animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            }
+
+            @-webkit-keyframes fadein {
+                from {
+                    bottom: 0;
+                    opacity: 0;
+                }
+                to {
+                    bottom: 30px;
+                    opacity: 1;
+                }
+            }
+
+            @keyframes fadein {
+                from {
+                    bottom: 0;
+                    opacity: 0;
+                }
+                to {
+                    bottom: 30px;
+                    opacity: 1;
+                }
+            }
+
+            @-webkit-keyframes fadeout {
+                from {
+                    bottom: 30px;
+                    opacity: 1;
+                }
+                to {
+                    bottom: 0;
+                    opacity: 0;
+                }
+            }
+
+            @keyframes fadeout {
+                from {
+                    bottom: 30px;
+                    opacity: 1;
+                }
+                to {
+                    bottom: 0;
+                    opacity: 0;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="row">
+            <div class="column" style="background-color: #aaa;">
+                <!--      <form>-->
+                <label for="main_account_balance">Main Account Balance:</label>
+                <input type="number" id="main_account_balance" name="main_account_balance" value="10000" /><br />
+                <br />
+
+                <label for="high">High:</label>
+                <input type="number" id="high" name="high" value="77.282" /><br />
+                <br />
+
+                <label for="low">Low:</label>
+                <input type="number" id="low" name="low" value="76.927" /><br />
+                <br />
+
+                <label for="currency_conversion_rate">Currency Conversion Rate:</label>
+                <input type="number" id="currency_conversion_rate" name="currency_conversion_rate" value="1.55" /><br />
+                <br />
+
+                <label for="risk_rate">Risk Rate:</label>
+                <input type="number" id="risk_rate" name="risk_rate" value="1" /><br />
+                <br />
+
+                <label for="reward_rate">Reward Rate:</label>
+                <input type="number" id="reward_rate" name="reward_rate" value="0.1" /><br />
+                <br />
+
+                <!--<input type="radio" id="buy_radio" name="buy_or_sell" value="Buy" checked>-->
+                <!--<label for="buy">Buy</label><br>-->
+
+                <!--<input type="radio" id="sell_radio" name="buy_or_sell" value="Sell">-->
+                <!--<label for="sell">Sell</label><br><br><br>-->
+
+                <label>How many digits after decimal?</label><br />
+                <input type="radio" id="3_radio" name="3_or_5_digits_after_decimal" value="3" checked />
+                <label for="buy">3</label><br />
+
+                <input type="radio" id="5_radio" name="3_or_5_digits_after_decimal" value="5" />
+                <label for="sell">5</label><br />
+                <br />
+
+                <!--<label class="switch" >-->
+                <!--<input type="checkbox" checked>-->
+                <!--<span class="slider round">Display all values?</span>-->
+                <!--</label><br><br>-->
+
+                <!--<label class="switch">-->
+                <!--	<input type="checkbox" checked> <span class="slider round">Copy order values on Submit?</span> </label>-->
+                <!--<br>-->
+                <!--<br>-->
+                <!--<label class="switch">-->
+                <!--	<input type="checkbox" checked> <span class="slider round">Copy both Buy and Sell values on Submit?</span> </label>-->
+                <!--<br>-->
+                <!--<br>-->
+
+                <label for="pip_difference">Attach Entry?</label>
+                <label class="switch">
+                    <input type="checkbox" id="attachEntryId" />
+                    <span class="slider round"></span>
+                </label>
+                <br />
+                <br />
+
+                <input type="button" value="Clear" onclick="clearClicked()" />
+                <input type="submit" value="Submit" onclick="submitClicked()" />
+                <!--</form>-->
+            </div>
+            <div class="column" style="background-color: #bbb;">
+                <label for="pip_difference">Pip Difference:</label>
+                <p style="display: inline;" id="pip_difference_id"></p>
+                <button type="button" onclick="copyPipDifference()">Copy</button><br />
+                <br />
+                <p style="display: inline;" id="pip_difference_id"></p>
+                <label for="total_pips">Total Pips:</label>
+                <p style="display: inline;" id="total_pips_id"></p>
+                <button type="button" onclick="copyTotalPips()">Copy</button><br />
+                <br />
+
+                <label class="center" for="values_for_buy_title">Values for Buy:</label><br />
+                <br />
+
+                <label for="entry_price_buy">Entry price (Buy):</label>
+                <p style="display: inline;" id="entry_price_buy_id"></p>
+                <button type="button" onclick="copyEntryPriceBuy()">Copy</button><br />
+                <br />
+                <label for="stop_loss_buy">Stop Loss price (Buy):</label>
+                <p style="display: inline;" id="stop_loss_buy_id"></p>
+                <button type="button" onclick="copyStopLossBuy()">Copy</button><br />
+                <br />
+                <label for="take_profit_buy">Take Profit price (Buy):</label>
+                <p style="display: inline;" id="take_profit_buy_id"></p>
+                <button type="button" onclick="copyTakeProfitBuy()">Copy</button><br />
+                <br />
+
+                <label class="center" for="values_for_sell">Values for Sell:</label><br />
+                <br />
+
+                <label for="entry_price_sell">Entry price (Sell):</label>
+                <p style="display: inline;" id="entry_price_sell_id"></p>
+                <button type="button" onclick="copyEntryPriceSell()">Copy</button><br />
+                <br />
+                <label for="stop_loss_sell">Stop Loss price (Sell):</label>
+                <p style="display: inline;" id="stop_loss_sell_id"></p>
+                <button type="button" onclick="copyStopLossSell()">Copy</button><br />
+                <br />
+                <label for="take_profit_sell">Take Profit price (Sell):</label>
+                <p style="display: inline;" id="take_profit_sell_id"></p>
+                <button type="button" onclick="copyTakeProfitSell()">Copy</button><br />
+                <br />
+
+                <label for="lot_size">Lot Size:</label>
+                <p style="display: inline;" id="lot_size_id"></p>
+                <button type="button" onclick="copyLotSize()">Copy</button><br />
+                <br />
+            </div>
+        </div>
+
+        <div id="snackbar">Some text some message..</div>
+
+        <script>
+            let pip_difference;
+            let total_pips;
+
+            let entry_price_buy;
+            let stop_loss_price_buy;
+            let take_profit_buy;
+
+            let entry_price_sell;
+            let stop_loss_price_sell;
+            let take_profit_sell;
+
+            let lot_size;
+
+            function copyPipDifference() {
+                navigator.clipboard.writeText(pip_difference);
+
+                var x = document.getElementById("snackbar");
+                x.className = "show";
+                x.innerText = "Copied Pip Difference: " + pip_difference;
+                setTimeout(function () {
+                    x.className = x.className.replace("show", "");
+                }, 3000);
+            }
+
+            function copyTotalPips() {
+                navigator.clipboard.writeText(total_pips);
+
+                var x = document.getElementById("snackbar");
+                x.className = "show";
+                x.innerText = "Copied Total Pips: " + total_pips;
+                setTimeout(function () {
+                    x.className = x.className.replace("show", "");
+                }, 3000);
+            }
+
+            function copyEntryPriceBuy() {
+                navigator.clipboard.writeText(entry_price_buy);
+
+                var x = document.getElementById("snackbar");
+                x.className = "show";
+                x.innerText = "Copied Entry Price (Buy): " + entry_price_buy;
+                setTimeout(function () {
+                    x.className = x.className.replace("show", "");
+                }, 3000);
+            }
+
+            function copyStopLossBuy() {
+                navigator.clipboard.writeText(stop_loss_price_buy);
+
+                var x = document.getElementById("snackbar");
+                x.className = "show";
+                x.innerText = "Copied Stop Loss (Buy): " + stop_loss_price_buy;
+                setTimeout(function () {
+                    x.className = x.className.replace("show", "");
+                }, 3000);
+            }
+
+            function copyTakeProfitBuy() {
+                navigator.clipboard.writeText(take_profit_buy);
+
+                var x = document.getElementById("snackbar");
+                x.className = "show";
+                x.innerText = "Copied Take Profit (Buy): " + take_profit_buy;
+                setTimeout(function () {
+                    x.className = x.className.replace("show", "");
+                }, 3000);
+            }
+
+            function copyEntryPriceSell() {
+                navigator.clipboard.writeText(entry_price_sell);
+
+                var x = document.getElementById("snackbar");
+                x.className = "show";
+                x.innerText = "Copied Entry Price (Sell): " + entry_price_sell;
+                setTimeout(function () {
+                    x.className = x.className.replace("show", "");
+                }, 3000);
+            }
+
+            function copyStopLossSell() {
+                navigator.clipboard.writeText(stop_loss_price_sell);
+
+                var x = document.getElementById("snackbar");
+                x.className = "show";
+                x.innerText = "Copied Stop Loss (Sell): " + stop_loss_price_sell;
+                setTimeout(function () {
+                    x.className = x.className.replace("show", "");
+                }, 3000);
+            }
+
+            function copyTakeProfitSell() {
+                navigator.clipboard.writeText(take_profit_sell);
+
+                var x = document.getElementById("snackbar");
+                x.className = "show";
+                x.innerText = "Copied Take Profit (Sell): " + take_profit_sell;
+                setTimeout(function () {
+                    x.className = x.className.replace("show", "");
+                }, 3000);
+            }
+
+            function copyLotSize() {
+                navigator.clipboard.writeText(lot_size);
+
+                var x = document.getElementById("snackbar");
+                x.className = "show";
+                x.innerText = "Copied Lot Size: " + lot_size;
+                setTimeout(function () {
+                    x.className = x.className.replace("show", "");
+                }, 3000);
+            }
+
+            function clearClicked() {
+                //	document.getElementById("main_account_balance").value = 10000;
+                document.getElementById("high").value = "";
+                document.getElementById("low").value = "";
+                document.getElementById("currency_conversion_rate").value = "";
+                document.getElementById("risk_rate").value = 1;
+                document.getElementById("reward_rate").value = 0.1;
+            }
+
+            function submitClicked() {
+                var main_account_balance = Number(document.getElementById("main_account_balance").value);
+                var high = Number(document.getElementById("high").value);
+                var low = Number(document.getElementById("low").value);
+                var currency_conversion_rate = Number(document.getElementById("currency_conversion_rate").value);
+                var risk_rate = Number(document.getElementById("risk_rate").value);
+                var reward_rate = Number(document.getElementById("reward_rate").value);
+                //var buy_radio = document.getElementById("buy_radio").checked;
+                //var sell_radio = document.getElementById("sell_radio").checked;
+                var three_radio = document.getElementById("3_radio").checked;
+                var five_radio = document.getElementById("5_radio").checked;
+                //alert ("You entered: " + main_account_balance + " " + high + " " + low + " " + currency_conversion_rate + " " + risk_rate + " " + reward_rate + " " + buy_radio + " " + sell_radio + " " + three_radio + " " + five_radio);
+
+                var attached_entry = document.getElementById("attachEntryId").checked;
+
+                pip_difference = high - low;
+
+                if (three_radio) {
+                    pip_difference = pip_difference.toFixed(3);
+                    total_pips = (pip_difference * 100 + 2).toFixed(1);
+                } else {
+                    pip_difference = pip_difference.toFixed(5);
+                    total_pips = (pip_difference * 10000 + 2).toFixed(1);
+                }
+
+                if (three_radio) {
+                    entry_price_buy = (high + 0.01).toFixed(3);
+                    stop_loss_price_buy = Number(entry_price_buy - (total_pips / 100) * risk_rate).toFixed(3);
+                    take_profit_buy = (Number(entry_price_buy) + (total_pips / 100) * reward_rate).toFixed(3);
+
+                    entry_price_sell = (low - 0.01).toFixed(3);
+                    stop_loss_price_sell = (Number(entry_price_sell) + (total_pips / 100) * risk_rate).toFixed(3);
+                    take_profit_sell = (entry_price_sell - (total_pips / 100) * reward_rate).toFixed(3);
+
+                    if (attached_entry) {
+                        entry_price_buy = Number(entry_price_buy - 0.01).toFixed(3);
+                        stop_loss_price_buy = (Number(stop_loss_price_buy) + 0.01).toFixed(3);
+                        take_profit_buy = Number(take_profit_buy - 0.01).toFixed(3);
+
+                        entry_price_sell = (Number(entry_price_sell) + 0.01).toFixed(3);
+                        stop_loss_price_sell = Number(stop_loss_price_sell - 0.01).toFixed(3);
+                        take_profit_sell = (Number(take_profit_sell) + 0.01).toFixed(3);
+
+                        total_pips -= 2;
+                    }
+                } else {
+                    entry_price_buy = (high + 0.0001).toFixed(5);
+                    stop_loss_price_buy = (entry_price_buy - (total_pips / 10000) * risk_rate).toFixed(5);
+                    take_profit_buy = (Number(entry_price_buy) + (total_pips / 10000) * reward_rate).toFixed(5);
+
+                    entry_price_sell = (low - 0.0001).toFixed(5);
+                    stop_loss_price_sell = (Number(entry_price_sell) + (total_pips / 10000) * risk_rate).toFixed(5);
+                    take_profit_sell = (entry_price_sell - (total_pips / 10000) * reward_rate).toFixed(5);
+
+                    if (attached_entry) {
+                        entry_price_buy = Number(entry_price_buy - 0.0001).toFixed(5);
+                        stop_loss_price_buy = (Number(stop_loss_price_buy) + 0.0001).toFixed(5);
+                        take_profit_buy = Number(take_profit_buy - 0.0001).toFixed(5);
+
+                        entry_price_sell = (Number(entry_price_sell) + 0.0001).toFixed(5);
+                        stop_loss_price_sell = Number(stop_loss_price_sell - 0.0001).toFixed(5);
+                        take_profit_sell = (Number(take_profit_sell) + 0.0001).toFixed(5);
+
+                        total_pips -= 2;
+                    }
+                }
+
+                lot_size = ((main_account_balance / 1000 / total_pips) * currency_conversion_rate).toFixed(2);
+
+                document.getElementById("pip_difference_id").innerText = pip_difference;
+                document.getElementById("total_pips_id").innerText = total_pips;
+
+                document.getElementById("entry_price_buy_id").innerText = entry_price_buy;
+                document.getElementById("stop_loss_buy_id").innerText = stop_loss_price_buy;
+                document.getElementById("take_profit_buy_id").innerText = take_profit_buy;
+
+                document.getElementById("entry_price_sell_id").innerText = entry_price_sell;
+                document.getElementById("stop_loss_sell_id").innerText = stop_loss_price_sell;
+                document.getElementById("take_profit_sell_id").innerText = take_profit_sell;
+
+                document.getElementById("lot_size_id").innerText = lot_size;
+            }
+        </script>
+    </body>
 </html>
-
